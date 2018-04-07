@@ -11,7 +11,7 @@ dbString = 'CalAnswers'
 db = client[dbString]
 
 app = Flask(__name__)
-UPLOAD_FOLDER = '/Users/henryqin/research/calAnswers/answers/uploads'
+UPLOAD_FOLDER = '/Users/ZeroNineSeven/research/bi_proj/answers/uploads/'
 ALLOWED_EXTENSIONS = {'csv'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 currFileName = None
@@ -37,7 +37,7 @@ def index():
 
 
 def extractColumnNames(currFileName):
-    with open("/Users/henryqin/research/calAnswers/answers/uploads/" + currFileName, newline='') as csvfile:
+    with open(UPLOAD_FOLDER + currFileName, newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         global currCols
         currCols = set(reader.fieldnames)
@@ -73,7 +73,7 @@ def getRecords():
     return json.dumps(recordsList)
 
 def addCollection(fileName):
-    subprocess.call(["mongoimport", "--db", dbString, "--collection", fileName, "--type", "csv", "--headerline", "--drop", "--file", "/Users/henryqin/research/calAnswers/answers/uploads/" + fileName])
+    subprocess.run(["mongoimport", "--db", dbString, "--collection", fileName, "--type", "csv", "--headerline", "--drop", "--file", UPLOAD_FOLDER + fileName])
 
 if __name__ == "__main__":
     app.run()
